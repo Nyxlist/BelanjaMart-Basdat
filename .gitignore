@@ -1,0 +1,16 @@
+# Storage / runtime data
+storage/uploads/*
+storage/chat/*
+storage/logs/*
+!storage/uploads/.gitkeep
+!storage/chat/.gitkeep
+!storage/logs/.gitkeep
+
+# Local config overrides
+backend/config/env.local.php
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/settings.json
