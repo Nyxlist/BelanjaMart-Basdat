@@ -5,7 +5,7 @@
 
 class NotificationModel
 {
-    public static function push(int $userId, string $title, string $body, string $icon = '🔔', ?string $link = null): int
+    public static function push(int $userId, string $title, string $body, string $icon = '', ?string $link = null): int
     {
         return Database::insert('notifications', [
             'user_id' => $userId,

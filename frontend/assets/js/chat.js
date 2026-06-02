@@ -39,7 +39,7 @@
             if (m.attachment_type === 'image') {
                 html += `<img src="${url}" alt="attachment">`;
             } else {
-                html += `<a href="${url}" target="_blank">📎 attachment</a>`;
+                html += `<a href="${url}" target="_blank">Attachment</a>`;
             }
         }
         const tick = mine ? (m.is_read ? '✓✓' : '✓') : '';

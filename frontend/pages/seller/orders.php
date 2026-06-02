@@ -6,7 +6,7 @@ $user    = current_user();
 $reasons = CancellationModel::reasonsFor('seller');
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    if (!csrf_check()) { flash('err', 'Invalid session'); redirect('/frontend/pages/seller/orders.php'); }
+    if (!csrf_check()) { flash('err', 'Session expired, please try again.'); redirect('/frontend/pages/seller/orders.php'); }
 
     $action  = $_POST['action'] ?? '';
     $orderId = (int) ($_POST['order_id'] ?? 0);
@@ -31,10 +31,9 @@ layout('header', ['title' => 'Seller Orders']);
 <div class="layout">
     <?php component('sidebar_seller'); ?>
     <div>
-        <h2>📋 Incoming orders</h2>
+        <h2>Incoming orders</h2>
         <?php if (empty($orders)): ?>
             <div class="card center" style="padding:50px; flex-direction:column;">
-                <div style="font-size:50px;">📭</div>
                 <p class="text-muted">No incoming orders yet.</p>
             </div>
         <?php else: ?>
@@ -51,8 +50,8 @@ layout('header', ['title' => 'Seller Orders']);
                             <td><span class="status status-<?= e($o['status']) ?>"><?= e(ucfirst($o['status'])) ?></span></td>
                             <td>
                                 <?php if (in_array($o['status'], ['paid', 'pending', 'processing'], true)): ?>
-                                    <button class="btn btn-info btn-sm" data-modal-open="ship-<?= (int) $o['order_id'] ?>">🚚 Ship</button>
-                                    <button class="btn btn-outline btn-sm" data-modal-open="cancel-<?= (int) $o['order_id'] ?>">❌</button>
+                                    <button class="btn btn-info btn-sm" data-modal-open="ship-<?= (int) $o['order_id'] ?>">Ship</button>
+                                    <button class="btn btn-outline btn-sm" data-modal-open="cancel-<?= (int) $o['order_id'] ?>">Cancel</button>
                                 <?php elseif ($o['status'] === 'shipped'): ?>
                                     <span class="text-muted fs-13">Resi: <?= e($o['tracking_number']) ?></span>
                                 <?php endif; ?>
@@ -94,7 +93,7 @@ layout('header', ['title' => 'Seller Orders']);
                             </select>
                         </div>
                         <div class="form-row"><label>Explanation to buyer</label>
-                            <textarea name="note" required></textarea></div>
+                            <textarea name="note" placeholder="Optional explanation..."></textarea></div>
                         <button class="btn btn-danger btn-block">Submit cancellation</button>
                     </form>
                     <?php $body = ob_get_clean();

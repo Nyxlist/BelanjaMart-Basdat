@@ -11,7 +11,7 @@ $default   = $addresses[0] ?? null;
 $err       = '';
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    if (!csrf_check()) { flash('err', 'Invalid form session'); redirect('/frontend/pages/buyer/checkout.php'); }
+    if (!csrf_check()) { flash('err', 'Session expired, please try again.'); redirect('/frontend/pages/buyer/checkout.php'); }
 
     if (isset($_POST['action']) && $_POST['action'] === 'add_address') {
         AddressModel::create((int) $user['user_id'], $_POST + [
@@ -50,20 +50,20 @@ layout('header', ['title' => 'Checkout']);
 ?>
 <?php component('flash'); ?>
 <div class="steps">
-    <div class="step">🛒 Cart</div>
-    <div class="step active">✅ Checkout</div>
-    <div class="step">📦 Tracking</div>
+    <div class="step">Cart</div>
+    <div class="step active">Checkout</div>
+    <div class="step">Tracking</div>
 </div>
 
 <?php if ($err): ?>
-    <div class="toast toast-danger" style="position:relative; margin-bottom:12px;">⚠️ <?= e($err) ?></div>
+    <div class="toast toast-danger" style="position:relative; margin-bottom:12px;"><?= e($err) ?></div>
 <?php endif; ?>
 
 <div class="grid" style="grid-template-columns: 2fr 1fr; gap:20px;">
     <div>
         <!-- Shipping address -->
         <div class="card">
-            <h3>📍 Shipping address</h3>
+            <h3>Shipping address</h3>
             <?php if (empty($addresses)): ?>
                 <p class="text-muted">No address yet - add one to continue.</p>
             <?php else: ?>
@@ -87,7 +87,7 @@ layout('header', ['title' => 'Checkout']);
 
         <!-- Add new address -->
         <div class="card mt-2">
-            <h3>➕ Add new address</h3>
+            <h3>Add new address</h3>
             <form method="POST" class="grid" style="grid-template-columns: 1fr 1fr; gap:8px;">
                 <?= csrf_field() ?>
                 <input type="hidden" name="action" value="add_address">
@@ -116,7 +116,7 @@ layout('header', ['title' => 'Checkout']);
 
         <!-- Items -->
         <div class="card mt-2">
-            <h3>🧺 Items</h3>
+            <h3>Items</h3>
             <?php foreach ($items as $it): ?>
                 <div class="row" style="justify-content:space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
                     <div>
@@ -132,7 +132,7 @@ layout('header', ['title' => 'Checkout']);
     <!-- Summary -->
     <div>
         <div class="card" style="position:sticky; top: calc(var(--topbar-h) + 16px);">
-            <h3>💳 Payment summary</h3>
+            <h3>Payment summary</h3>
             <div class="row" style="justify-content:space-between;"><span>Subtotal</span><span><?= Currency::format($subtotal, $displayCur) ?></span></div>
             <div class="row" style="justify-content:space-between;"><span>Shipping</span><span><?= Currency::format($shipping, $displayCur) ?></span></div>
             <div class="row" style="justify-content:space-between;"><span>Tax (<?= number_format(($country['tax_rate'] ?? 0) * 100, 1) ?>%)</span><span><?= Currency::format($tax, $displayCur) ?></span></div>
@@ -141,7 +141,7 @@ layout('header', ['title' => 'Checkout']);
                 <span class="fw-bold">Total</span>
                 <span class="fw-bold" style="color:var(--color-primary); font-size:20px;"><?= Currency::format($total, $displayCur) ?></span>
             </div>
-            <button class="btn btn-primary btn-block btn-lg mt-2" type="submit" form="placeOrderForm">Place order</button>
+            <button class="btn btn-primary btn-block btn-lg mt-2" type="submit" form="placeOrderForm" <?= empty($addresses) ? 'disabled title="Add an address first"' : '' ?>>Place order</button>
             <div class="text-soft fs-13 mt-1" style="text-align:center;">Funds are held in an escrow simulation until delivery.</div>
         </div>
     </div>

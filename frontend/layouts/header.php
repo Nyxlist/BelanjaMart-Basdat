@@ -12,7 +12,7 @@ $wishCount   = $user ? WishlistModel::count((int) $user['user_id']) : 0;
 $notifCount  = $user ? NotificationModel::unreadCount((int) $user['user_id']) : 0;
 $pageTitle   = $title ?? 'BelanjaMart';
 ?><!DOCTYPE html>
-<html lang="id">
+<html lang="<?= e(Lang::locale()) ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

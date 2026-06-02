@@ -52,8 +52,9 @@ return [
 
     // ---------- Defaults ----------
     'defaults' => [
-        'currency' => 'IDR',
-        'country'  => 'ID',
-        'locale'   => 'id-ID',
+        'currency'    => 'IDR',
+        'country'     => 'ID',
+        'locale'      => 'id-ID',
+        'locale_code' => 'en',        // translation language: en, id, ja, zh
     ],
 ];

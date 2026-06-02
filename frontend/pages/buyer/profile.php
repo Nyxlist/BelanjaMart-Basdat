@@ -7,7 +7,7 @@ $profile = UserModel::buyerProfile((int) $user['user_id']);
 $stats   = AnalyticsService::buyerDashboard((int) $user['user_id']);
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    if (!csrf_check()) { flash('err', 'Invalid session'); redirect('/frontend/pages/buyer/profile.php'); }
+    if (!csrf_check()) { flash('err', 'Session expired, please try again.'); redirect('/frontend/pages/buyer/profile.php'); }
     UserModel::updateProfile((int) $user['user_id'], $_POST);
     Database::update('buyer_profiles', ['bio' => $_POST['bio'] ?? ''], 'user_id = ?', [(int) $user['user_id']]);
     $u = UserModel::findById((int) $user['user_id']);
@@ -19,7 +19,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 layout('header', ['title' => 'My profile']);
 ?>
 <?php component('flash'); ?>
-<h2 class="mb-2">👤 My Profile</h2>
+<h2 class="mb-2">My Profile</h2>
 
 <div class="grid" style="grid-template-columns: 1fr 2fr; gap:20px;">
     <div class="card center" style="flex-direction:column;">
@@ -29,9 +29,9 @@ layout('header', ['title' => 'My profile']);
         <h3 class="mt-1"><?= e($user['name']) ?></h3>
         <p class="text-muted fs-13"><?= e($profile['bio'] ?? 'No bio yet.') ?></p>
         <div class="row mt-2" style="gap:6px; flex-wrap:wrap; justify-content:center;">
-            <span class="tag tag-info">📦 <?= (int) $stats['orders'] ?> orders</span>
-            <span class="tag tag-success">✅ <?= (int) $stats['delivered'] ?> delivered</span>
-            <span class="tag tag-primary">❤️ <?= (int) $stats['wishlist'] ?> wishlisted</span>
+            <span class="tag tag-info"><?= (int) $stats['orders'] ?> orders</span>
+            <span class="tag tag-success"><?= (int) $stats['delivered'] ?> delivered</span>
+            <span class="tag tag-primary"><?= (int) $stats['wishlist'] ?> wishlisted</span>
         </div>
     </div>
 

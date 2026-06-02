@@ -59,7 +59,7 @@ class ChatService
         $sender = UserModel::findById($senderId);
         NotificationModel::push($other, 'New message from ' . $sender['name'],
             mb_substr($body, 0, 80) ?: '[attachment]',
-            '💬',
+            '',
             '/frontend/pages/shared/chat.php?chat_id=' . $chatId);
 
         return ['ok' => true, 'message_id' => $messageId];

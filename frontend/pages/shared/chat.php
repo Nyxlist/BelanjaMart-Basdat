@@ -10,7 +10,7 @@ $rooms   = ChatModel::listForUser($userId);
 $active = null;
 if (!empty($_GET['chat_id'])) {
     $c = ChatModel::find((int) $_GET['chat_id']);
-    if ($c && (int) $c['buyer_id'] === $userId || (int) ($c['seller_id'] ?? 0) === $userId) {
+    if ($c && ((int) $c['buyer_id'] === $userId || (int) ($c['seller_id'] ?? 0) === $userId)) {
         $active = $c;
     }
 } elseif (!empty($_GET['seller_id']) && $user['role'] === 'buyer') {
@@ -38,7 +38,7 @@ layout('header', ['title' => 'Messages']);
     <!-- LEFT: room list -->
     <div class="chat-list">
         <div style="padding: 14px 16px; border-bottom: 1px solid var(--border);">
-            <h3>💬 Messages</h3>
+            <h3>Messages</h3>
         </div>
         <?php if (empty($rooms)): ?>
             <div class="text-muted" style="padding:16px; text-align:center;">No conversations yet.</div>
@@ -63,7 +63,7 @@ layout('header', ['title' => 'Messages']);
     <div class="chat-room">
         <?php if (!$active): ?>
             <div class="center" style="flex:1; flex-direction:column; color:var(--text-muted);">
-                <div style="font-size:50px;">💬</div>
+                <div style="font-size:18px; font-weight:600;">No conversation selected</div>
                 Select a conversation
             </div>
         <?php else: ?>
@@ -81,7 +81,7 @@ layout('header', ['title' => 'Messages']);
                             if ($m['attachment_type'] === 'image'): ?>
                                 <img src="<?= e($url) ?>" alt="attachment">
                             <?php else: ?>
-                                <a href="<?= e($url) ?>" target="_blank">📎 attachment</a>
+                                <a href="<?= e($url) ?>" target="_blank">Attachment</a>
                             <?php endif; ?>
                         <?php endif; ?>
                         <div class="meta"><?= date('H:i', strtotime($m['created_at'])) ?>
@@ -93,7 +93,7 @@ layout('header', ['title' => 'Messages']);
             <div class="typing-indicator" id="typingIndicator"></div>
             <form class="chat-form" id="chatForm" enctype="multipart/form-data">
                 <input type="text" id="chatInput" name="body" placeholder="Type a message..." autocomplete="off">
-                <label class="btn btn-ghost btn-sm" style="margin:0; cursor:pointer;">📎
+                <label class="btn btn-ghost btn-sm" style="margin:0; cursor:pointer;">Attach
                     <input type="file" name="attachment" accept="image/*,.pdf,.txt" style="display:none;">
                 </label>
                 <button class="btn btn-primary btn-sm">Send</button>

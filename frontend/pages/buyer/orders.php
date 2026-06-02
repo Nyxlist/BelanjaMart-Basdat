@@ -6,7 +6,7 @@ $user = current_user();
 $reasons = CancellationModel::reasonsFor('buyer');
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    if (!csrf_check()) { flash('err', 'Invalid form session'); redirect('/frontend/pages/buyer/orders.php'); }
+    if (!csrf_check()) { flash('err', 'Session expired, please try again.'); redirect('/frontend/pages/buyer/orders.php'); }
     $action  = $_POST['action'] ?? '';
     $orderId = (int) ($_POST['order_id'] ?? 0);
 
@@ -28,11 +28,10 @@ $orders = OrderModel::forBuyer((int) $user['user_id']);
 layout('header', ['title' => 'My orders']);
 ?>
 <?php component('flash'); ?>
-<h2 class="mb-2">📦 My Orders</h2>
+<h2 class="mb-2">My Orders</h2>
 
 <?php if (empty($orders)): ?>
     <div class="card center" style="padding:50px; flex-direction:column;">
-        <div style="font-size:50px;">📭</div>
         <p class="text-muted">No orders yet.</p>
         <a class="btn btn-primary" href="<?= base_url('/frontend/pages/buyer/home.php') ?>">Start shopping</a>
     </div>
@@ -44,7 +43,7 @@ layout('header', ['title' => 'My orders']);
     <div class="row" style="justify-content:space-between; flex-wrap:wrap;">
         <div>
             <div class="fw-bold">Order #<?= (int) $o['order_id'] ?></div>
-            <div class="text-muted fs-13">📅 <?= date('d M Y, H:i', strtotime($o['order_date'])) ?></div>
+            <div class="text-muted fs-13"><?= date('d M Y, H:i', strtotime($o['order_date'])) ?></div>
         </div>
         <span class="status status-<?= e($o['status']) ?>"><?= e(ucfirst($o['status'])) ?></span>
     </div>
@@ -70,16 +69,16 @@ layout('header', ['title' => 'My orders']);
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="pay">
                     <input type="hidden" name="order_id" value="<?= (int) $o['order_id'] ?>">
-                    <button class="btn btn-success btn-sm">💳 Pay (simulate)</button>
+                    <button class="btn btn-success btn-sm">Pay (simulate)</button>
                 </form>
-                <button class="btn btn-outline btn-sm" data-modal-open="cancelModal-<?= (int) $o['order_id'] ?>">❌ Cancel</button>
+                <button class="btn btn-outline btn-sm" data-modal-open="cancelModal-<?= (int) $o['order_id'] ?>">Cancel</button>
             <?php endif; ?>
             <?php if ($o['status'] === 'shipped'): ?>
                 <form method="POST" style="display:inline;">
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="received">
                     <input type="hidden" name="order_id" value="<?= (int) $o['order_id'] ?>">
-                    <button class="btn btn-success btn-sm">✅ I've received</button>
+                    <button class="btn btn-success btn-sm">Received</button>
                 </form>
             <?php endif; ?>
             <?php if ($o['status'] === 'delivered'): ?>
@@ -87,13 +86,13 @@ layout('header', ['title' => 'My orders']);
                     <?php if (empty($it['has_review'])): ?>
                         <a class="btn btn-info btn-sm"
                            href="<?= base_url('/frontend/pages/shared/review.php?order_item_id=' . (int) $it['order_item_id']) ?>">
-                            ⭐ Review
+                            Review
                         </a>
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
             <?php if (!empty($tracking)): ?>
-                <button class="btn btn-ghost btn-sm" data-modal-open="trackModal-<?= (int) $o['order_id'] ?>">🚚 Track</button>
+                <button class="btn btn-ghost btn-sm" data-modal-open="trackModal-<?= (int) $o['order_id'] ?>">Track</button>
             <?php endif; ?>
         </div>
     </div>

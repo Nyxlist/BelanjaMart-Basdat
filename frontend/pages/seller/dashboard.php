@@ -15,7 +15,7 @@ layout('header', ['title' => 'Seller Dashboard']);
     <div>
         <!-- Greeting card -->
         <div class="card" style="background: linear-gradient(120deg, var(--color-info), #5dade2); color:#fff;">
-            <h2><?= e($profile['shop_name'] ?? $user['name']) ?> 🏪</h2>
+            <h2><?= e($profile['shop_name'] ?? $user['name']) ?></h2>
             <p style="opacity:.95;">Welcome back! Here's your shop at a glance.</p>
             <?php component('seller_badge', ['badges' => $badges]); ?>
         </div>
@@ -32,10 +32,10 @@ layout('header', ['title' => 'Seller Dashboard']);
 
         <!-- Reputation -->
         <div class="card mt-3">
-            <h3>📈 Reputation</h3>
+            <h3>Reputation</h3>
             <div class="row" style="gap:24px; flex-wrap:wrap;">
                 <div><div class="text-muted fs-13">Avg rating</div>
-                    <div class="fw-bold" style="font-size:22px;">⭐ <?= number_format($stats['rep']['avg_rating'] ?? 0, 2) ?></div></div>
+                    <div class="fw-bold" style="font-size:22px;">★ <?= number_format($stats['rep']['avg_rating'] ?? 0, 2) ?></div></div>
                 <div><div class="text-muted fs-13">Reviews</div>
                     <div class="fw-bold" style="font-size:22px;"><?= (int) ($stats['rep']['total_reviews'] ?? 0) ?></div></div>
                 <div><div class="text-muted fs-13">Completed sales</div>
@@ -49,7 +49,7 @@ layout('header', ['title' => 'Seller Dashboard']);
 
         <!-- Top products -->
         <div class="card mt-3">
-            <h3>🔥 Top products</h3>
+            <h3>Top products</h3>
             <?php if (empty($stats['topProducts'])): ?>
                 <p class="text-muted">No sales yet - add products to start selling.</p>
             <?php else: ?>
@@ -60,7 +60,7 @@ layout('header', ['title' => 'Seller Dashboard']);
                         <tr>
                             <td><?= e($p['product_name']) ?></td>
                             <td><?= (int) $p['total_sold'] ?></td>
-                            <td>⭐ <?= number_format((float) $p['average_rating'], 1) ?></td>
+                            <td>★ <?= number_format((float) $p['average_rating'], 1) ?></td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -70,7 +70,7 @@ layout('header', ['title' => 'Seller Dashboard']);
 
         <!-- Mini chart -->
         <div class="card mt-3">
-            <h3>📊 Revenue last 14 days</h3>
+            <h3>Revenue last 14 days</h3>
             <?php
             $chart = $stats['byDay'];
             $max = 1;

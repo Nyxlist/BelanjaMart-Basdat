@@ -15,7 +15,7 @@ if (isset($_GET['remove'])) {
     redirect('/frontend/pages/buyer/cart.php');
 }
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    if (!csrf_check()) { flash('err', 'Invalid form session'); redirect('/frontend/pages/buyer/cart.php'); }
+    if (!csrf_check()) { flash('err', 'Session expired, please try again.'); redirect('/frontend/pages/buyer/cart.php'); }
     if (isset($_POST['update']) && !empty($_POST['qty'])) {
         CartService::update((array) $_POST['qty']);
         flash('ok', 'Cart updated');
@@ -30,16 +30,15 @@ layout('header', ['title' => 'Cart']);
 ?>
 <?php component('flash'); ?>
 <div class="steps">
-    <div class="step active">🛒 Cart</div>
-    <div class="step">✅ Checkout</div>
-    <div class="step">📦 Tracking</div>
+    <div class="step active">Cart</div>
+    <div class="step">Checkout</div>
+    <div class="step">Tracking</div>
 </div>
 
-<h2 class="mb-2">🛒 Shopping Cart</h2>
+<h2 class="mb-2">Shopping Cart</h2>
 
 <?php if (empty($items)): ?>
     <div class="card center" style="padding:50px; flex-direction:column;">
-        <div style="font-size:50px;">🛒</div>
         <p class="text-muted">Your cart is empty.</p>
         <a class="btn btn-primary" href="<?= base_url('/frontend/pages/buyer/home.php') ?>">Start shopping</a>
     </div>
@@ -68,7 +67,7 @@ layout('header', ['title' => 'Cart']);
                     <td><?= Currency::display((float) $it['subtotal'], $it['currency_code'], $displayCur) ?></td>
                     <td>
                         <a class="btn btn-ghost btn-sm" data-confirm="Remove this item?"
-                           href="<?= base_url('/frontend/pages/buyer/cart.php?remove=' . (int) $it['product_id']) ?>">🗑️</a>
+                           href="<?= base_url('/frontend/pages/buyer/cart.php?remove=' . (int) $it['product_id']) ?>">Remove</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -76,7 +75,7 @@ layout('header', ['title' => 'Cart']);
         </table>
     </div>
     <div class="row mt-2">
-        <button type="submit" name="update" class="btn btn-info">🔄 Update cart</button>
+        <button type="submit" name="update" class="btn btn-info">Update cart</button>
         <div class="spacer"></div>
         <a class="btn btn-outline" href="<?= base_url('/frontend/pages/buyer/home.php') ?>">← Continue shopping</a>
     </div>

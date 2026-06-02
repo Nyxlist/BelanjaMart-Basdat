@@ -10,7 +10,7 @@
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem(THEME_KEY, theme);
         document.querySelectorAll('[data-theme-toggle] .icon').forEach(el => {
-            el.textContent = theme === 'dark' ? '☀️' : '🌙';
+            el.textContent = theme === 'dark' ? 'Light' : 'Dark';
         });
     }
 
@@ -50,14 +50,6 @@
         }, timeout);
     };
 
-    /* --------------------- Auto-toast from query string --------------------- */
-    function autoToast() {
-        const params = new URLSearchParams(location.search);
-        if (params.get('toast')) {
-            window.toast(params.get('toast'), params.get('toast_type') || 'info');
-        }
-    }
-
     /* --------------------- Modal --------------------- */
     window.modalOpen = function (id) {
         const m = document.getElementById(id);
@@ -83,22 +75,29 @@
         if (!confirm(link.dataset.confirm)) e.preventDefault();
     });
 
+    /* --------------------- Language dropdown --------------------- */
+    function initLangSwitcher() {
+        const btn = document.getElementById('langToggle');
+        const dropdown = document.getElementById('langDropdown');
+        if (!btn || !dropdown) return;
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', () => {
+            dropdown.classList.remove('show');
+        });
+
+        dropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+
     /* --------------------- Init --------------------- */
     document.addEventListener('DOMContentLoaded', () => {
         initTheme();
-        autoToast();
+        initLangSwitcher();
     });
-
-    /* --------------------- Loading helper --------------------- */
-    window.bmLoading = function (btn, on = true) {
-        if (!btn) return;
-        if (on) {
-            btn.dataset.label = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span> Loading...';
-        } else {
-            btn.disabled = false;
-            btn.innerHTML = btn.dataset.label || btn.innerHTML;
-        }
-    };
 })();

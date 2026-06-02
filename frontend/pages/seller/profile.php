@@ -8,7 +8,7 @@ $badges  = UserModel::badges((int) $user['user_id']);
 $reviews = ReviewModel::forSeller((int) $user['user_id']);
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    if (!csrf_check()) { flash('err', 'Invalid session'); redirect('/frontend/pages/seller/profile.php'); }
+    if (!csrf_check()) { flash('err', 'Session expired, please try again.'); redirect('/frontend/pages/seller/profile.php'); }
     UserModel::updateProfile((int) $user['user_id'], $_POST);
     UserModel::updateSellerProfile((int) $user['user_id'], $_POST);
     $u = UserModel::findById((int) $user['user_id']);
@@ -23,7 +23,7 @@ layout('header', ['title' => 'Shop profile']);
 <div class="layout">
     <?php component('sidebar_seller'); ?>
     <div>
-        <h2>🏪 Shop profile</h2>
+        <h2>Shop profile</h2>
 
         <div class="card mt-2">
             <form method="POST" class="grid" style="grid-template-columns: 1fr 1fr; gap:8px;">
@@ -57,7 +57,7 @@ layout('header', ['title' => 'Shop profile']);
         </div>
 
         <div class="card mt-3">
-            <h3>🏅 Badges</h3>
+            <h3>Badges</h3>
             <?php if (empty($badges)): ?>
                 <p class="text-muted">Earn your first badge by completing more sales and getting reviews.</p>
             <?php else: ?>
@@ -66,14 +66,14 @@ layout('header', ['title' => 'Shop profile']);
         </div>
 
         <div class="card mt-3">
-            <h3>💬 Recent reviews</h3>
+            <h3>Recent reviews</h3>
             <?php if (empty($reviews)): ?>
                 <p class="text-muted">No reviews yet.</p>
             <?php else: foreach (array_slice($reviews, 0, 6) as $r): ?>
                 <div style="border-bottom:1px solid var(--border); padding: 8px 0;">
                     <div class="row" style="justify-content: space-between;">
                         <div class="fw-600"><?= e($r['user_name']) ?> · <?= e($r['product_name']) ?></div>
-                        <span>⭐ <?= (int) $r['rating'] ?>/5</span>
+                        <span>★ <?= (int) $r['rating'] ?>/5</span>
                     </div>
                     <div class="text-muted fs-13"><?= e($r['comment']) ?></div>
                 </div>

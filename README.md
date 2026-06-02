@@ -1,23 +1,23 @@
 # BelanjaMart
 
-Marketplace sederhana berbasis PHP + MySQL.
+A simple e-commerce marketplace built with PHP + MySQL.
 
-## Cara Akses (lokal)
+## Local Setup
 
-1. Import `database/belanjamart.sql` ke phpMyAdmin
-2. Letakkan folder **belanjamart** (bukan file `.sql`-nya) di `htdocs`
-3. Jalankan di `http://localhost/belanjamart/`
+1. Import `database/belanjamart.sql` into phpMyAdmin
+2. Place the **belanjamart** folder in your `htdocs` directory
+3. Access at `http://localhost/belanjamart/`
 
-## ⚠️ Catatan Penting
-Jika database **belanjamart** sudah ada, disarankan menghapusnya terlebih dahulu sebelum import `belanjamart.sql` untuk menghindari error.
+## ⚠️ Important Note
+If the **belanjamart** database already exists, drop it first before importing `belanjamart.sql` to avoid errors.
 
-## Akun Demo
-Semua akun memakai password: `password123`
+## Demo Accounts
+All accounts use password: `password123`
 
-| Email             | Role   |
-|-------------------|--------|
-| buyer1@mail.com   | Buyer  |
-| buyer2@mail.com   | Buyer  |
-| seller1@mail.com  | Seller |
-| seller2@mail.com  | Seller |
-| admin@mail.com    | Admin  |
+| Email             | Name          | Role   |
+|-------------------|---------------|--------|
+| buyer1@mail.com   | Alex Buyer    | Buyer  |
+| buyer2@mail.com   | Jane Buyer    | Buyer  |
+| seller1@mail.com  | Star Shop     | Seller |
+| seller2@mail.com  | Newbie Store  | Seller |
+| admin@mail.com    | Admin         | Admin  |

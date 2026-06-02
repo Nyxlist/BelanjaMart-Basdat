@@ -8,7 +8,7 @@ NotificationModel::markAllRead((int) $user['user_id']);
 
 layout('header', ['title' => 'Notifications']);
 ?>
-<h2 class="mb-2">🔔 Notifications</h2>
+<h2 class="mb-2">Notifications</h2>
 
 <div class="card">
     <?php if (empty($rows)): ?>

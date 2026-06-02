@@ -35,11 +35,13 @@ class FraudService
         ", [$order['user_id']]);
         if ($cancels >= 3) { $score += 25; $reasons[] = "Buyer cancelled $cancels orders this month"; }
 
-        // 3. Address country differs from account country
-        $addr = Database::one("SELECT country_code FROM addresses WHERE address_id = ?",
+        // 3. Address country differs from buyer's account country
+        $buyer = Database::one("SELECT country FROM users WHERE user_id = ?", [$order['user_id']]);
+        $addr  = Database::one("SELECT country_code FROM addresses WHERE address_id = ?",
             [$order['address_id']]);
-        if ($addr && $addr['country_code'] !== ($order['country_code'] ?? 'ID')) {
-            // (`country_code` field on order isn't stored, but the buyer has one)
+        if ($addr && $buyer && $addr['country_code'] !== ($buyer['country'] ?? 'ID')) {
+            $score += 10;
+            $reasons[] = 'Shipping address country differs from account country';
         }
 
         $score = min($score, 100);

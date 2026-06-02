@@ -9,7 +9,7 @@ $currencies= Database::all("SELECT * FROM currencies ORDER BY currency_code");
 $countries = Database::all("SELECT * FROM countries ORDER BY country_name");
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    if (!csrf_check()) { flash('err', 'Invalid session'); redirect('/frontend/pages/seller/pricing.php'); }
+    if (!csrf_check()) { flash('err', 'Session expired, please try again.'); redirect('/frontend/pages/seller/pricing.php'); }
 
     $samples = [];
     foreach ($_POST['source'] ?? [] as $i => $src) {
@@ -40,8 +40,8 @@ layout('header', ['title' => 'Smart Pricing']);
 <div class="layout">
     <?php component('sidebar_seller'); ?>
     <div>
-        <h2>💰 Smart Pricing Tool</h2>
-        <p class="text-muted">Compare competitor prices, convert across currencies and get a suggested retail price for your market.</p>
+        <h2>Smart Pricing Tool</h2>
+        <p class="text-muted">Compare competitor prices, convert across currencies and get a suggested price (incl. tax + shipping) for your market.</p>
 
         <div class="card mt-2">
             <form method="POST" id="priceForm">
@@ -112,7 +112,7 @@ layout('header', ['title' => 'Smart Pricing']);
                     <div class="card card-tight"><div class="text-muted fs-13">Avg</div><div class="fw-bold"><?= Currency::format($result['avg'], $result['currency']) ?></div></div>
                     <div class="card card-tight"><div class="text-muted fs-13">Max</div><div class="fw-bold"><?= Currency::format($result['max'], $result['currency']) ?></div></div>
                     <div class="card card-tight" style="background:rgba(192,57,43,.1);">
-                        <div class="text-muted fs-13">Suggested retail</div>
+                        <div class="text-muted fs-13">Suggested price (incl. tax + shipping)</div>
                         <div class="fw-bold" style="color:var(--color-primary);"><?= Currency::format($result['suggested'], $result['currency']) ?></div>
                     </div>
                 </div>

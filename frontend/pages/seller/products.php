@@ -7,7 +7,7 @@ $sellerId   = (int) $user['user_id'];
 $categories = ProductModel::categories();
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    if (!csrf_check()) { flash('err', 'Invalid session'); redirect('/frontend/pages/seller/products.php'); }
+    if (!csrf_check()) { flash('err', 'Session expired, please try again.'); redirect('/frontend/pages/seller/products.php'); }
 
     $action = $_POST['action'] ?? '';
     if ($action === 'create') {
@@ -28,13 +28,10 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     } elseif ($action === 'update') {
         ProductModel::update((int) $_POST['product_id'], $sellerId, $_POST);
         flash('ok', 'Product updated.');
+    } elseif ($action === 'delete') {
+        ProductModel::delete((int) ($_POST['product_id'] ?? 0), $sellerId);
+        flash('ok', 'Product deleted.');
     }
-    redirect('/frontend/pages/seller/products.php');
-}
-
-if (isset($_GET['delete'])) {
-    ProductModel::delete((int) $_GET['delete'], $sellerId);
-    flash('ok', 'Product deleted.');
     redirect('/frontend/pages/seller/products.php');
 }
 
@@ -52,7 +49,7 @@ layout('header', ['title' => 'Products']);
     <div>
         <!-- Form -->
         <div class="card">
-            <h3><?= $edit ? '✏️ Edit product' : '➕ Add product' ?></h3>
+            <h3><?= $edit ? 'Edit product' : 'Add product' ?></h3>
             <form method="POST" class="grid" style="grid-template-columns: repeat(2, 1fr); gap:8px;">
                 <?= csrf_field() ?>
                 <input type="hidden" name="action" value="<?= $edit ? 'update' : 'create' ?>">
@@ -90,7 +87,7 @@ layout('header', ['title' => 'Products']);
                     <textarea name="description"><?= e($edit['description'] ?? '') ?></textarea>
                 </div>
                 <div class="row" style="grid-column: span 2; gap:8px;">
-                    <button class="btn btn-primary" type="submit"><?= $edit ? '💾 Save changes' : '➕ Add product' ?></button>
+                    <button class="btn btn-primary" type="submit"><?= $edit ? 'Save changes' : 'Add product' ?></button>
                     <?php if ($edit): ?>
                         <a class="btn btn-outline" href="<?= base_url('/frontend/pages/seller/products.php') ?>">Cancel</a>
                     <?php endif; ?>
@@ -100,7 +97,7 @@ layout('header', ['title' => 'Products']);
 
         <!-- Listing -->
         <div class="card mt-3" style="overflow-x:auto;">
-            <h3>📦 My products</h3>
+            <h3>My products</h3>
             <?php if (empty($products)): ?>
                 <p class="text-muted">No products yet.</p>
             <?php else: ?>
@@ -114,11 +111,15 @@ layout('header', ['title' => 'Products']);
                             <td><?= Currency::format((float) $p['price'], $p['currency_code']) ?></td>
                             <td><?= (int) $p['stock'] ?></td>
                             <td><?= (int) $p['total_sold'] ?></td>
-                            <td>⭐ <?= number_format((float) $p['average_rating'], 1) ?></td>
+                            <td>★ <?= number_format((float) $p['average_rating'], 1) ?></td>
                             <td>
-                                <a class="btn btn-info btn-sm" href="?edit=<?= (int) $p['product_id'] ?>">✏️</a>
-                                <a class="btn btn-danger btn-sm" data-confirm="Delete this product?"
-                                   href="?delete=<?= (int) $p['product_id'] ?>">🗑️</a>
+                                <a class="btn btn-info btn-sm" href="?edit=<?= (int) $p['product_id'] ?>">Edit</a>
+                                <form method="POST" style="display:inline;" onsubmit="return confirm('Delete this product?')">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="product_id" value="<?= (int) $p['product_id'] ?>">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>

@@ -210,3 +210,22 @@ if (!function_exists('logger')) {
         @file_put_contents($dir . '/app.log', $line, FILE_APPEND);
     }
 }
+
+if (!function_exists('__')) {
+    /**
+     * Translate a string using the current locale.
+     *   __('Welcome back, :name!', ['name' => 'Alex'])
+     */
+    function __(string $key, array $replace = []): string
+    {
+        return Lang::get($key, $replace);
+    }
+}
+
+if (!function_exists('lang')) {
+    /** Get the current locale code (e.g. 'en', 'id'). */
+    function lang(): string
+    {
+        return Lang::locale();
+    }
+}

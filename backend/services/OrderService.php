@@ -86,7 +86,7 @@ class OrderService
                         $it['seller_id'],
                         'New order received',
                         "Order #$orderId placed for {$it['product_name']} (x{$it['qty']})",
-                        '🛒',
+                        '',
                         '/frontend/pages/seller/orders.php'
                     );
                 }
@@ -143,8 +143,8 @@ class OrderService
         OrderModel::addTracking($orderId, 'Shipped', $courier, "Tracking: $trackingNumber");
         NotificationModel::push((int) $order['user_id'],
             'Your order is on the way',
-            "Order #$orderId shipped via $courier (resi: $trackingNumber)",
-            '🚚',
+            "Order #$orderId shipped via $courier (tracking: $trackingNumber)",
+            '',
             '/frontend/pages/buyer/orders.php');
 
         return ['ok' => true];

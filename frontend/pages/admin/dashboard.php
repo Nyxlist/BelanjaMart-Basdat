@@ -27,7 +27,7 @@ $pendingSellers = Database::all("
 ");
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    if (!csrf_check()) { flash('err','Invalid session'); redirect('/frontend/pages/admin/dashboard.php'); }
+    if (!csrf_check()) { flash('err','Session expired, please try again.'); redirect('/frontend/pages/admin/dashboard.php'); }
     if (($_POST['action'] ?? '') === 'verify_seller') {
         $sid = (int) $_POST['user_id'];
         Database::update('seller_profiles', ['is_verified' => 1], 'user_id = ?', [$sid]);
@@ -45,19 +45,19 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 layout('header', ['title' => 'Admin']);
 ?>
 <?php component('flash'); ?>
-<h2 class="mb-2">🛡 Admin Dashboard</h2>
+<h2 class="mb-2">Admin Dashboard</h2>
 
 <div class="grid" style="grid-template-columns: repeat(auto-fit,minmax(150px,1fr));">
     <div class="card"><div class="text-muted fs-13">Users</div><div class="fw-bold" style="font-size:22px;"><?= $counts['users'] ?></div></div>
     <div class="card"><div class="text-muted fs-13">Sellers</div><div class="fw-bold" style="font-size:22px;"><?= $counts['sellers'] ?></div></div>
     <div class="card"><div class="text-muted fs-13">Products</div><div class="fw-bold" style="font-size:22px;"><?= $counts['products'] ?></div></div>
     <div class="card"><div class="text-muted fs-13">Orders</div><div class="fw-bold" style="font-size:22px;"><?= $counts['orders'] ?></div></div>
-    <div class="card"><div class="text-muted fs-13">Open fraud flags</div><div class="fw-bold text-danger" style="font-size:22px;"><?= $counts['fraud'] ?></div></div>
+    <div class="card"><div class="text-muted fs-13">Flagged orders</div><div class="fw-bold text-danger" style="font-size:22px;"><?= $counts['fraud'] ?></div></div>
 </div>
 
 <div class="grid mt-3" style="grid-template-columns: 1fr 1fr; gap:16px;">
     <div class="card">
-        <h3>🆔 Pending seller verifications</h3>
+        <h3>Pending seller verifications</h3>
         <?php if (empty($pendingSellers)): ?>
             <p class="text-muted">All sellers are verified.</p>
         <?php else: foreach ($pendingSellers as $s): ?>
@@ -77,7 +77,7 @@ layout('header', ['title' => 'Admin']);
     </div>
 
     <div class="card">
-        <h3>🚨 Fraud flags</h3>
+        <h3>Fraud flags</h3>
         <?php if (empty($frauds)): ?>
             <p class="text-muted">No open flags.</p>
         <?php else: foreach ($frauds as $f): ?>

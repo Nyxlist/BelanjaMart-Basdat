@@ -6,10 +6,10 @@
 -- 1. Open phpMyAdmin and DROP database `belanjamart` if it exists
 -- 2. Import this file (it will create everything from scratch)
 -- 3. Default test accounts (password = "password123" for all):
---    - buyer1@mail.com   (Indonesian buyer)
---    - buyer2@mail.com   (US buyer, multi-currency demo)
---    - seller1@mail.com  (Top Rated Seller demo)
---    - seller2@mail.com  (New Seller demo)
+--    - buyer1@mail.com   (Indonesian buyer - Alex Buyer)
+--    - buyer2@mail.com   (US buyer - Jane Buyer, multi-currency demo)
+--    - seller1@mail.com  (Top Rated Seller - Star Shop)
+--    - seller2@mail.com  (New Seller - Newbie Store)
 --    - admin@mail.com    (Admin / moderator)
 -- =====================================================================
 
@@ -459,47 +459,47 @@ INSERT INTO countries (country_code, country_name, currency_code, tax_rate, base
 ('DE', 'Germany',       'EUR', 0.1900,  4);
 
 INSERT INTO categories (category_name, icon) VALUES
-('Elektronik',    '📱'),
-('Fashion',       '👗'),
-('Rumah Tangga',  '🏠'),
-('Buku',          '📚'),
-('Makanan',       '🍔'),
-('Olahraga',      '⚽');
+('Electronics',   ''),
+('Fashion',       ''),
+('Home & Living', ''),
+('Books',         ''),
+('Food & Drinks', ''),
+('Sports',        '');
 
 -- All sample passwords are "password123" (bcrypt hashed below)
 -- hash generated with PHP password_hash('password123', PASSWORD_DEFAULT)
 INSERT INTO users (name, email, password, role, country_code, preferred_currency, is_verified) VALUES
-('Andi Pembeli',  'buyer1@mail.com',  '$2y$10$HzFjh.rPKE.el4gHxGQBuOUaKAnAPuHarIbzRJc4RccAmCQz642wO', 'buyer',  'ID', 'IDR', 1),
+('Alex Buyer',    'buyer1@mail.com',  '$2y$10$HzFjh.rPKE.el4gHxGQBuOUaKAnAPuHarIbzRJc4RccAmCQz642wO', 'buyer',  'ID', 'IDR', 1),
 ('Jane Buyer',    'buyer2@mail.com',  '$2y$10$HzFjh.rPKE.el4gHxGQBuOUaKAnAPuHarIbzRJc4RccAmCQz642wO', 'buyer',  'US', 'USD', 1),
-('Toko Maju',     'seller1@mail.com', '$2y$10$HzFjh.rPKE.el4gHxGQBuOUaKAnAPuHarIbzRJc4RccAmCQz642wO', 'seller', 'ID', 'IDR', 1),
+('Star Shop',     'seller1@mail.com', '$2y$10$HzFjh.rPKE.el4gHxGQBuOUaKAnAPuHarIbzRJc4RccAmCQz642wO', 'seller', 'ID', 'IDR', 1),
 ('Newbie Store',  'seller2@mail.com', '$2y$10$HzFjh.rPKE.el4gHxGQBuOUaKAnAPuHarIbzRJc4RccAmCQz642wO', 'seller', 'ID', 'IDR', 0),
 ('Admin',         'admin@mail.com',   '$2y$10$HzFjh.rPKE.el4gHxGQBuOUaKAnAPuHarIbzRJc4RccAmCQz642wO', 'admin',  'ID', 'IDR', 1);
 
 INSERT INTO buyer_profiles (user_id, bio) VALUES
-(1, 'Suka belanja kebutuhan rumah tangga.'),
+(1, 'Love shopping for home essentials.'),
 (2, 'International tech enthusiast.');
 
 INSERT INTO seller_profiles (user_id, shop_name, description, avg_rating, total_reviews, total_sales, cancellation_rate, delivery_success_rate, is_verified) VALUES
-(3, 'Toko Maju Jaya',  'Penjual terpercaya sejak 2020.', 4.80, 120, 240, 1.50, 99.20, 1),
-(4, 'Newbie Store',    'Toko baru, butuh dukungan kalian!', 0.00, 0, 0, 0.00, 100.00, 0);
+(3, 'Star Shop Official', 'Trusted seller since 2020.', 4.80, 120, 240, 1.50, 99.20, 1),
+(4, 'Newbie Store',       'New shop, still growing!', 0.00, 0, 0, 0.00, 100.00, 0);
 
 INSERT INTO addresses (user_id, label, recipient, phone, line1, city, state, postal_code, country_code, latitude, longitude, is_default) VALUES
-(1, 'Rumah', 'Andi Pembeli', '081234567890', 'Jl. Mawar No. 10', 'Jakarta', 'DKI Jakarta', '10110', 'ID', -6.2088, 106.8456, 1),
-(2, 'Home',  'Jane Buyer',   '+15551234567', '123 Main St',      'Seattle', 'WA',          '98101', 'US', 47.6062, -122.3321, 1);
+(1, 'Home', 'Alex Buyer', '081234567890', 'Jl. Mawar No. 10', 'Jakarta', 'DKI Jakarta', '10110', 'ID', -6.2088, 106.8456, 1),
+(2, 'Home', 'Jane Buyer', '+15551234567', '123 Main St',      'Seattle', 'WA',          '98101', 'US', 47.6062, -122.3321, 1);
 
 INSERT INTO products (seller_id, category_id, product_name, description, price, currency_code, stock, weight_grams, average_rating, total_reviews, total_sold) VALUES
-(3, 1, 'Smartphone Pro X',     'Layar AMOLED 6.7", 256GB.',          5499000, 'IDR', 25, 350, 4.7, 56, 130),
-(3, 1, 'Wireless Earbuds Z',   'Bluetooth 5.3, ANC aktif.',           899000, 'IDR', 60, 100, 4.6, 31, 90),
-(3, 2, 'Kemeja Flanel Pria',   'Flanel premium, slim fit.',           199000, 'IDR', 100, 400, 4.8, 22, 65),
-(3, 3, 'Set Panci Anti Lengket','5 pcs anti lengket food grade.',    459000, 'IDR', 40, 2500, 4.5, 11, 28),
-(4, 4, 'Novel Petualangan',    'Cerita seru karya penulis lokal.',     79000, 'IDR', 200, 350, 0.0,  0,  0),
-(4, 5, 'Snack Box Premium',    'Aneka camilan kekinian.',             129000, 'IDR', 80, 1200, 0.0,  0,  0);
+(3, 1, 'Smartphone Pro X',       '6.7" AMOLED display, 256GB storage.',    5499000, 'IDR', 25, 350, 4.7, 56, 130),
+(3, 1, 'Wireless Earbuds Z',     'Bluetooth 5.3, active noise cancelling.', 899000, 'IDR', 60, 100, 4.6, 31, 90),
+(3, 2, 'Men Flannel Shirt',      'Premium flannel, slim fit.',              199000, 'IDR', 100, 400, 4.8, 22, 65),
+(3, 3, 'Non-Stick Pan Set',      '5 pcs food-grade non-stick cookware.',   459000, 'IDR', 40, 2500, 4.5, 11, 28),
+(4, 4, 'Adventure Novel',        'Exciting story by a local author.',       79000, 'IDR', 200, 350, 0.0,  0,  0),
+(4, 5, 'Premium Snack Box',      'Assorted trendy snacks.',                129000, 'IDR', 80, 1200, 0.0,  0,  0);
 
 INSERT INTO badges (code, label, description, icon, color) VALUES
-('trusted_seller', 'Trusted Seller', 'Avg rating >= 4.5 with 50+ reviews', '🛡️', '#27ae60'),
-('top_rated',      'Top Rated',      'Avg rating >= 4.8 with 100+ reviews', '⭐', '#f1c40f'),
+('trusted_seller', 'Trusted Seller', 'Avg rating >= 4.5 with 50+ reviews', '★', '#27ae60'),
+('top_rated',      'Top Rated',      'Avg rating >= 4.8 with 100+ reviews', '★', '#f1c40f'),
 ('fast_response',  'Fast Response',  'Avg response < 30 minutes', '⚡', '#3498db'),
-('verified',       'Verified',       'Identity / shop documents verified', '✅', '#9b59b6');
+('verified',       'Verified',       'Identity / shop documents verified', '✓', '#9b59b6');
 
 INSERT INTO seller_badges (user_id, badge_id) VALUES
 (3, 1),
@@ -507,16 +507,16 @@ INSERT INTO seller_badges (user_id, badge_id) VALUES
 (3, 4);
 
 INSERT INTO cancellation_reasons (audience, label, requires_note, sort_order) VALUES
-('buyer',  'Berubah pikiran',                       0, 1),
-('buyer',  'Salah memilih produk / varian',         0, 2),
-('buyer',  'Ongkir terlalu mahal',                  0, 3),
-('buyer',  'Menemukan harga lebih murah di tempat lain', 1, 4),
-('buyer',  'Lainnya',                               1, 99),
-('seller', 'Stok kosong',                           0, 1),
-('seller', 'Alamat pembeli tidak terjangkau',       0, 2),
-('seller', 'Pembeli tidak respon',                  0, 3),
-('seller', 'Indikasi pesanan mencurigakan',         1, 4),
-('seller', 'Lainnya',                               1, 99);
+('buyer',  'Changed my mind',                        0, 1),
+('buyer',  'Ordered wrong product / variant',        0, 2),
+('buyer',  'Shipping cost too high',                 0, 3),
+('buyer',  'Found a cheaper price elsewhere',        1, 4),
+('buyer',  'Other',                                  1, 99),
+('seller', 'Out of stock',                           0, 1),
+('seller', 'Buyer address unreachable',              0, 2),
+('seller', 'Buyer not responding',                   0, 3),
+('seller', 'Suspicious order detected',              1, 4),
+('seller', 'Other',                                  1, 99);
 
 -- A demonstration order for buyer1 from seller1
 INSERT INTO orders (user_id, address_id, status, payment_status, payment_method,
@@ -533,12 +533,12 @@ INSERT INTO order_items (order_id, product_id, seller_id, quantity, price)
 VALUES (1, 1, 3, 1, 5499000);
 
 INSERT INTO order_tracking (order_id, event_label, location, note, happened_at) VALUES
-(1, 'Order placed',   'Jakarta',  'Pembeli berhasil checkout.',         DATE_SUB(NOW(), INTERVAL 6 DAY)),
-(1, 'Payment held',   'System',   'Dana ditahan (escrow simulasi).',    DATE_SUB(NOW(), INTERVAL 6 DAY)),
-(1, 'Packed',         'Jakarta',  'Penjual menyiapkan paket.',          DATE_SUB(NOW(), INTERVAL 5 DAY)),
-(1, 'Shipped',        'Jakarta',  'Diserahkan ke kurir JNE.',           DATE_SUB(NOW(), INTERVAL 5 DAY)),
-(1, 'In transit',     'Bandung',  'Paket sedang dalam perjalanan.',     DATE_SUB(NOW(), INTERVAL 3 DAY)),
-(1, 'Delivered',      'Jakarta',  'Paket diterima pembeli.',            DATE_SUB(NOW(), INTERVAL 1 DAY));
+(1, 'Order placed',   'Jakarta',  'Buyer completed checkout.',           DATE_SUB(NOW(), INTERVAL 6 DAY)),
+(1, 'Payment held',   'System',   'Funds held in escrow (simulation).',  DATE_SUB(NOW(), INTERVAL 6 DAY)),
+(1, 'Packed',         'Jakarta',  'Seller prepared the package.',        DATE_SUB(NOW(), INTERVAL 5 DAY)),
+(1, 'Shipped',        'Jakarta',  'Handed over to JNE courier.',         DATE_SUB(NOW(), INTERVAL 5 DAY)),
+(1, 'In transit',     'Bandung',  'Package in transit.',                  DATE_SUB(NOW(), INTERVAL 3 DAY)),
+(1, 'Delivered',      'Jakarta',  'Package received by buyer.',           DATE_SUB(NOW(), INTERVAL 1 DAY));
 
 -- =====================================================================
 -- 18. TRIGGERS - keep aggregate counters consistent

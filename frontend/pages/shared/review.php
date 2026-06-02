@@ -25,7 +25,7 @@ if ($item['status'] !== 'delivered') {
 $existing = ReviewModel::findByOrderItem($orderItemId);
 
 if (!$existing && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    if (!csrf_check()) { flash('err', 'Invalid session'); redirect('/frontend/pages/shared/review.php?order_item_id=' . $orderItemId); }
+    if (!csrf_check()) { flash('err', 'Session expired, please try again.'); redirect('/frontend/pages/shared/review.php?order_item_id=' . $orderItemId); }
     $rating = (int) ($_POST['rating'] ?? 0);
     if ($rating < 1 || $rating > 5) {
         flash('err', 'Rating must be between 1 and 5.');
@@ -48,10 +48,10 @@ layout('header', ['title' => 'Write review']);
 <?php component('flash'); ?>
 <div class="container-narrow">
     <div class="card">
-        <h2>⭐ Review: <?= e($item['product_name']) ?></h2>
+        <h2>Review: <?= e($item['product_name']) ?></h2>
         <?php if ($existing): ?>
             <p class="text-muted">You already submitted this review on <?= date('d M Y', strtotime($existing['created_at'])) ?>.</p>
-            <div class="row" style="gap:6px;"><span>Rating:</span><span>⭐ <?= (int) $existing['rating'] ?>/5</span></div>
+            <div class="row" style="gap:6px;"><span>Rating:</span><span>★ <?= (int) $existing['rating'] ?>/5</span></div>
             <p class="mt-1"><?= nl2br(e($existing['comment'])) ?></p>
             <a class="btn btn-outline mt-2" href="<?= base_url('/frontend/pages/buyer/orders.php') ?>">← Back to orders</a>
         <?php else: ?>
@@ -60,11 +60,11 @@ layout('header', ['title' => 'Write review']);
                 <div class="form-row">
                     <label>Product rating</label>
                     <select name="rating" required>
-                        <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-                        <option value="4">⭐⭐⭐⭐ Good</option>
-                        <option value="3">⭐⭐⭐ OK</option>
-                        <option value="2">⭐⭐ Bad</option>
-                        <option value="1">⭐ Terrible</option>
+                        <option value="5">★★★★★ Excellent</option>
+                        <option value="4">★★★★ Good</option>
+                        <option value="3">★★★ OK</option>
+                        <option value="2">★★ Bad</option>
+                        <option value="1">★ Terrible</option>
                     </select>
                 </div>
                 <div class="form-row">
@@ -72,7 +72,7 @@ layout('header', ['title' => 'Write review']);
                     <select name="seller_rating">
                         <option value="">— skip —</option>
                         <?php for ($i = 5; $i >= 1; $i--): ?>
-                            <option value="<?= $i ?>"><?= str_repeat('⭐', $i) ?></option>
+                            <option value="<?= $i ?>"><?= str_repeat('★', $i) ?></option>
                         <?php endfor; ?>
                     </select>
                 </div>

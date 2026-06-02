@@ -1,19 +1,8 @@
 <?php
 /**
- * Legacy bridge - kept only so any old code that still calls
- *   include 'config.php';
- *   mysqli_query($conn, ...);
- * keeps working while the codebase is migrated.
+ * Application bootstrap entry point.
  *
- * NEW code should use Database::pdo() and the model classes.
+ * All pages and API endpoints include the bootstrap file which
+ * sets up autoloading, configuration, and the Database (PDO) layer.
  */
 require_once __DIR__ . '/backend/config/bootstrap.php';
-
-if (!isset($conn) || !$conn) {
-    $cfg  = config('db');
-    $conn = mysqli_connect($cfg['host'], $cfg['username'], $cfg['password'], $cfg['database']);
-    if (!$conn) {
-        die("Koneksi gagal: " . mysqli_connect_error());
-    }
-    mysqli_set_charset($conn, $cfg['charset']);
-}

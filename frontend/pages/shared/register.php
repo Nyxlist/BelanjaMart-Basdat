@@ -8,7 +8,7 @@ if (!in_array($role, ['buyer', 'seller'], true)) $role = 'buyer';
 $err = '';
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     if (!csrf_check()) {
-        flash('err', 'Invalid form session.');
+        flash('err', 'Session expired, please try again.');
         redirect('/auth/register.php?role=' . $role);
     }
     $res = AuthService::register($_POST, $role);
@@ -27,7 +27,7 @@ layout('header', ['title' => 'Create account']);
         <h2 style="margin-top:8px;">Create your <?= e($role) ?> account</h2>
 
         <?php if ($err): ?>
-            <div class="toast toast-danger" style="position:relative; margin-bottom:12px;">⚠️ <?= e($err) ?></div>
+            <div class="toast toast-danger" style="position:relative; margin-bottom:12px;"><?= e($err) ?></div>
         <?php endif; ?>
 
         <form method="POST" class="mt-2">
