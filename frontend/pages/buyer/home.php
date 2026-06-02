@@ -49,7 +49,7 @@ layout('header', ['title' => __('Discover')]);
     <?php foreach ($categories as $c): ?>
         <a class="tag <?= ($filters['category_id'] ?? 0) == $c['category_id'] ? 'tag-primary' : '' ?>"
            href="<?= base_url('/frontend/pages/buyer/home.php?cat=' . (int) $c['category_id']) ?>">
-            <?= e($c['icon']) ?> <?= e($c['category_name']) ?>
+            <?= e($c['category_name']) ?>
         </a>
     <?php endforeach; ?>
 </div>

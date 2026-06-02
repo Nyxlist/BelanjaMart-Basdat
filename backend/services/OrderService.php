@@ -256,14 +256,14 @@ class OrderService
                         'Order cancelled by buyer',
                         "Order #$orderId was cancelled. Reason: " .
                             ($reason['label'] ?? '—'),
-                        '⚠️', '/frontend/pages/seller/orders.php');
+                        '', '/frontend/pages/seller/orders.php');
                 }
             } else {
                 NotificationModel::push((int) $order['user_id'],
                     'Order cancelled by seller',
                     "Order #$orderId was cancelled. Reason: " .
                         ($reason['label'] ?? '—'),
-                    '⚠️', '/frontend/pages/buyer/orders.php');
+                    '', '/frontend/pages/buyer/orders.php');
             }
         });
 

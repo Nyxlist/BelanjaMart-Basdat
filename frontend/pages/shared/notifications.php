@@ -13,15 +13,23 @@ layout('header', ['title' => 'Notifications']);
 <div class="card">
     <?php if (empty($rows)): ?>
         <p class="text-muted">No notifications yet.</p>
-    <?php else: foreach ($rows as $n): ?>
-        <a href="<?= e($n['link'] ?? '#') ?>" style="display:block; padding: 10px 0; border-bottom: 1px solid var(--border); color:inherit;">
-            <div class="row" style="gap:10px; align-items:flex-start;">
-                <div style="font-size:24px;"><?= e($n['icon']) ?></div>
-                <div style="flex:1;">
-                    <div class="fw-600"><?= e($n['title']) ?></div>
-                    <div class="text-muted fs-13"><?= e($n['body']) ?></div>
-                    <div class="text-soft fs-13"><?= date('d M Y, H:i', strtotime($n['created_at'])) ?></div>
-                </div>
+    <?php else: foreach ($rows as $n):
+        $link = trim($n['link'] ?? '');
+        if ($link) {
+            $base = rtrim(config('app.base_url', ''), '/');
+            // If link already includes the base path, don't double it
+            if ($base && strpos($link, $base) === 0) {
+                // already has base_url prefix, use as-is
+            } else {
+                $link = base_url($link);
+            }
+        }
+    ?>
+        <a href="<?= e($link ?: '#') ?>" style="display:block; padding: 10px 0; border-bottom: 1px solid var(--border); color:inherit;">
+            <div style="flex:1;">
+                <div class="fw-600"><?= e($n['title']) ?></div>
+                <div class="text-muted fs-13"><?= e($n['body']) ?></div>
+                <div class="text-soft fs-13"><?= date('d M Y, H:i', strtotime($n['created_at'])) ?></div>
             </div>
         </a>
     <?php endforeach; endif; ?>

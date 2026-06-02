@@ -18,8 +18,8 @@ layout('header', ['title' => $p['product_name']]);
 <?php component('flash'); ?>
 
 <div class="grid" style="grid-template-columns: 1.4fr 1fr; gap: 24px;">
-    <div class="card center" style="background:var(--bg-muted); min-height:340px; font-size:48px; color:var(--text-soft);">
-        <?= e($p['category_icon'] ?? '') ?>
+    <div class="card center" style="background:var(--bg-muted); min-height:340px; font-size:18px; color:var(--text-soft);">
+        <?= e($p['category_name'] ?? 'Product') ?>
     </div>
     <div class="card">
         <span class="tag tag-primary"><?= e($p['category_name']) ?></span>

@@ -16,8 +16,6 @@ $wished = !empty($p['_wished']);
         <div class="img">
             <?php if (!empty($p['image'])): ?>
                 <img src="<?= base_url('/storage/uploads/' . e($p['image'])) ?>" alt="<?= e($p['product_name']) ?>" style="object-fit:cover; width:100%; height:100%;">
-            <?php else: ?>
-                <span style="font-size:32px; color:var(--text-soft);"><?= e($p['category_icon'] ?? '') ?></span>
             <?php endif; ?>
 
             <?php if (current_user() && (current_user()['role'] ?? null) === 'buyer'): ?>

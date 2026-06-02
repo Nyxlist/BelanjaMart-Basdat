@@ -5,10 +5,10 @@
  */
 $badges = $badges ?? [];
 ?>
-<div class="row" style="gap:6px;">
+<div class="row" style="gap:6px; flex-wrap:wrap;">
     <?php foreach ($badges as $b): ?>
         <span class="tag" style="background: <?= e($b['color']) ?>22; color: <?= e($b['color']) ?>;">
-            <?= e($b['icon']) ?> <?= e($b['label']) ?>
+            <?= e($b['label']) ?>
         </span>
     <?php endforeach; ?>
 </div>

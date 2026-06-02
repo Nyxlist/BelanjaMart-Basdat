@@ -133,18 +133,20 @@ layout('header', ['title' => 'Smart Pricing']);
                 <?php endif; ?>
 
                 <h3 class="mt-3">Sources</h3>
-                <table class="table">
-                    <thead><tr><th>Source</th><th>Original</th><th>In <?= e($result['currency']) ?></th></tr></thead>
-                    <tbody>
-                        <?php foreach ($result['samples'] as $s): ?>
-                            <tr>
-                                <td><?= e($s['source']) ?></td>
-                                <td><?= Currency::format((float) $s['original'], $s['currency']) ?></td>
-                                <td><?= Currency::format((float) $s['in_target'], $result['currency']) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                <div style="overflow-x:auto;">
+                    <table class="table" style="table-layout:fixed; width:100%;">
+                        <thead><tr><th style="width:60%;">Source</th><th style="width:20%;">Original</th><th style="width:20%;">In <?= e($result['currency']) ?></th></tr></thead>
+                        <tbody>
+                            <?php foreach ($result['samples'] as $s): ?>
+                                <tr>
+                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:0;"><?= e($s['source']) ?></td>
+                                    <td><?= Currency::format((float) $s['original'], $s['currency']) ?></td>
+                                    <td><?= Currency::format((float) $s['in_target'], $result['currency']) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             <?php endif; ?>
         </div>
         <?php endif; ?>

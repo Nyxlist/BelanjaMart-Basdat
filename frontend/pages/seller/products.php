@@ -73,7 +73,7 @@ layout('header', ['title' => 'Products']);
                         <option value="">-- pick category --</option>
                         <?php foreach ($categories as $c): ?>
                             <option value="<?= (int) $c['category_id'] ?>" <?= ($edit['category_id'] ?? null) == $c['category_id'] ? 'selected' : '' ?>>
-                                <?= e($c['icon']) ?> <?= e($c['category_name']) ?>
+                                <?= e($c['category_name']) ?>
                             </option>
                         <?php endforeach; ?>
                     </select>

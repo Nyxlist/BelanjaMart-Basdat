@@ -53,7 +53,7 @@ layout('header', ['title' => 'Seller Orders']);
                                     <button class="btn btn-info btn-sm" data-modal-open="ship-<?= (int) $o['order_id'] ?>">Ship</button>
                                     <button class="btn btn-outline btn-sm" data-modal-open="cancel-<?= (int) $o['order_id'] ?>">Cancel</button>
                                 <?php elseif ($o['status'] === 'shipped'): ?>
-                                    <span class="text-muted fs-13">Resi: <?= e($o['tracking_number']) ?></span>
+                                    <span class="text-muted fs-13">Tracking: <?= e($o['tracking_number']) ?></span>
                                 <?php endif; ?>
                             </td>
                         </tr>
